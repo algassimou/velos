@@ -1,0 +1,41 @@
+EXEC = faire 
+CLIENT = client
+SERVEUR = serveur
+PARK = park
+CLIENT = client
+LIBNAME = lcycle.a
+
+export OBJ2 = ../liste.o ../dliste.o ../conversion.o ../envoi.o ../reception.o ../ecriture.o ../lecture.o ../traitement.o ../log.o ../frame.o
+
+
+SRC1 = $(wildcard *.c)
+OBJ1 = $(SRC1:.c=.o)
+
+all : archive  $(EXEC)
+
+$(EXEC) : 
+	@(cd $(PARK) && $(MAKE))
+	@(cd $(CLIENT) && $(MAKE))
+	@(cd $(SERVEUR) && $(MAKE))
+
+archive : $(OBJ1)
+	ar -c $(LIBNAME)
+	mv $(LIBNAME) $(LIB)
+%.o : %.c
+	@($(CC) -I$(INCLUDE) $(CFLAGS) $^ -o $@)
+	ar -r $(LIBNAME) $^ 
+
+.PHONY : clean mrproper $(EXEC)
+
+clean :
+	@(rm -f *.o)
+	@(cd $(PARK) && $(MAKE) $@)
+	@(cd $(CLIENT) && $(MAKE) $@)
+	@(cd $(SERVEUR) && $(MAKE) $@)
+
+
+mrproper : 
+	@(cd $(PARK) && $(MAKE) $@)
+	@(cd $(CLIENT) && $(MAKE) $@)
+	@(cd $(SERVEUR) && $(MAKE) $@)
+

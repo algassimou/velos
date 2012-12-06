@@ -12,6 +12,7 @@
 *.dylib
 
 # Executables
-*.exe
-*.out
-*.app
+bin/*
+
+#fichier temp d'emacs
+*~
